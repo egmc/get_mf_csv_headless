@@ -14,18 +14,8 @@ const fs = require('fs');
   await page.click('a.ssoLink img[alt=email]');
   await page.waitFor(3000);
 
-  // // Get the "viewport" of the page, as reported by the page.
-  // const dimensions = await page.evaluate(() => {
-  //   return {
-  //     width: document.documentElement.clientWidth,
-  //     height: document.documentElement.clientHeight,
-  //     deviceScaleFactor: window.devicePixelRatio
-  //   };
-  // });
-
   let downloadPath = './tmp/';
 
-  // await page.focus('input[type=email]');
   await page.type('input[type=email]', EMAIL, {delay: 100});
   await page.click('input[type=submit]');
 
