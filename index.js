@@ -20,6 +20,16 @@ const doDl = async (page, downloadPath) => {
 (async () => {
   const EMAIL = process.argv[2];
   const PASS = process.argv[3];
+  const downloadPath = __dirname + '/tmp/';
+
+   //clear files before dl
+  const files = fs.readdirSync(downloadPath);
+  for (const file of files) {
+    if (file.endsWith('.csv')) {
+      let filePath = downloadPath + file;
+      fs.unlinkSync(filePath);
+    }
+  }
 
   const browser = await puppeteer.launch({headless: true, slowMo: 10, defaultViewport: null});
 
@@ -32,8 +42,6 @@ const doDl = async (page, downloadPath) => {
 
   await page.click('a.ssoLink img[alt=email]');
   await page.waitFor(3000);
-
-  let downloadPath = './tmp/';
 
   await page.type('input[type=email]', EMAIL, {delay: 10});
   await page.click('input[type=submit]');
@@ -54,11 +62,6 @@ const doDl = async (page, downloadPath) => {
   await page.waitFor(5500);
 
   await doDl(page, downloadPath);
-
-  const files = fs.readdirSync(downloadPath);
-  for (const file of files) {
-    console.log(file);
-  }
 
   await browser.close();
 })();
