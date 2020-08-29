@@ -20,6 +20,7 @@ const doDl = async (page, downloadPath) => {
 (async () => {
   const EMAIL = process.argv[2];
   const PASS = process.argv[3];
+  const DEBUG = Boolean(process.argv[4]);
   const downloadPath = __dirname + '/tmp/';
 
    //clear files before dl
@@ -31,16 +32,16 @@ const doDl = async (page, downloadPath) => {
     }
   }
 
-  const browser = await puppeteer.launch({headless: true, slowMo: 10, defaultViewport: null});
+  const browser = await puppeteer.launch({headless: !DEBUG, slowMo: 10, defaultViewport: null});
 
 
   const page = await browser.newPage();
 
   await page.setUserAgent('Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1');
 
-  await page.goto('https://moneyforward.com/users/sign_in');
+  await page.goto('https://moneyforward.com/sign_in');
 
-  await page.click('a.ssoLink img[alt=email]');
+  await page.click('.ssoLink img[alt=email]');
   await page.waitFor(3000);
 
   await page.type('input[type=email]', EMAIL, {delay: 10});
